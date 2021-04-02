@@ -1,5 +1,5 @@
-# login-cpp
-Registration &amp; Authentication with C++ + Starter Kit
+# automated-bug-detection
+Automated Bug Detection with C++ + Starter Kit
 
 # Getting Started With C++
 
