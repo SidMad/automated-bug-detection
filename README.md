@@ -5,6 +5,10 @@ Automated Bug Detection with C++ + Starter Kit
 
 [C++ QUICK REFERENCE](http://www.hoomanb.com/cs/QuickRef/CppQuickRef.pdf)
 
+# Getting Started With Java
+
+[Java QUICK REFERENCE](https://introcs.cs.princeton.edu/java/11cheatsheet/)
+
 # Building an Automated Bug Detection Tool
 
 * Inferring Likely Invariants for Bug Detection
