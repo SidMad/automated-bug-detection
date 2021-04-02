@@ -11,7 +11,7 @@ Automated Bug Detection with C++ + Starter Kit
 
 # Building an Automated Bug Detection Tool
 
-* Inferring Likely Invariants for Bug Detection <br/><br/>
+* Inferring Likely Invariants for Bug Detection <br/>
 
 `void scope1() {` <br/>
 &nbsp;&nbsp;`A(); B(); C(); D();` <br/>
