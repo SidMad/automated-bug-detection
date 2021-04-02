@@ -44,10 +44,10 @@ and D. Match function names only. <br/>
 
   * The sample output with the default support and confidence thresholds should be: <br/>
 
-**bug: A in scope2, pair: (A, B), support: 3, confidence: 75.00% <br/> 
-bug: A in scope3, pair: (A, D), support: 3, confidence: 75.00% <br/> 
-bug: B in scope3, pair: (B, D), support: 4, confidence: 80.00% <br/> 
-bug: D in scope2, pair: (B, D), support: 4, confidence: 80.00%** <br/> 
+  * **bug: A in scope2, pair: (A, B), support: 3, confidence: 75.00%** <br/> 
+  * **bug: A in scope3, pair: (A, D), support: 3, confidence: 75.00%** <br/> 
+  * **bug: B in scope3, pair: (B, D), support: 4, confidence: 80.00%** <br/> 
+  * **bug: D in scope2, pair: (B, D), support: 4, confidence: 80.00%** <br/> 
 
 * Finding and Explaining False Positives
   * Given a bitcode file, you use LLVM opt to generate call graphs in plain text format, and then analyze the textual call graphs to generate function pairs and detect bugs. The opt tool is installed on CS Linux machines (mc*.cs.purdue.edu) If you want to work on your own computer, you need to use 64-bit LLVM 6.0 to avoid compatibility issues. <br/>
