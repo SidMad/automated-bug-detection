@@ -49,11 +49,6 @@ and D. Match function names only.
     * **bug: B in scope3, pair: (B, D), support: 4, confidence: 80.00%** 
     * **bug: D in scope2, pair: (B, D), support: 4, confidence: 80.00%**
 
-* Finding and Explaining False Positives
-  * Given a bitcode file, you use LLVM opt to generate call graphs in plain text format, and then analyze the textual call graphs to generate function pairs and detect bugs. The opt tool is installed on CS Linux machines (mc*.cs.purdue.edu) If you want to work on your own computer, you need to use 64-bit LLVM 6.0 to avoid compatibility issues.
-  * A sample call graph in text format is shown as follows:
-
-
 * Inter-Procedural Analysis
 * Improving the Solutions
 
