@@ -1,5 +1,5 @@
 # automated-bug-detection
-Automated Bug Detection with C++ + Starter Kit
+Automated Bug Detection with C++ and Java + Starter Kit
 
 # Getting Started With C++
 
