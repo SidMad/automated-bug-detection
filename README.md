@@ -16,3 +16,6 @@ Automated Bug Detection with C++ + Starter Kit
 * Inter-Procedural Analysis
 * Improving the Solutions
 
+# Using a Static Bug Detection Tool Coverity
+* Resolving Bugs in Apache Tomcat
+* Analyzing The Code
