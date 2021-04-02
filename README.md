@@ -13,24 +13,24 @@ Automated Bug Detection with C++ + Starter Kit
 
 * Inferring Likely Invariants for Bug Detection <br/><br/>
 
-`void scope1() {
-  A(); B(); C(); D();
+`void scope1() { <br/>
+  A(); B(); C(); D(); <br/>
 } <br/>
-void scope2() {
-  A(); C(); D();
-}
-void scope3() {
-  A(); B(); B();
-}
-void scope4() {
-  B(); D(); scope1();
-}
-void scope5() {
-  B(); D(); A();
-}
-void scope6() {
-B(); D(); 
-}`
+void scope2() { <br/>
+  A(); C(); D(); <br/>
+} <br/>
+void scope3() { <br/>
+  A(); B(); B(); <br/>
+} <br/>
+void scope4() { <br/>
+  B(); D(); scope1(); <br/>
+} <br/>
+void scope5() { <br/>
+  B(); D(); A(); <br/>
+} <br/>
+void scope6() { <br/>
+B(); D(); <br/>
+}` <br/><br/>
 
 * Finding and Explaining False Positives
 * Inter-Procedural Analysis
