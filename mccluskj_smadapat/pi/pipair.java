@@ -21,10 +21,6 @@ class Pipair {
     NumberFormat numf = NumberFormat.getNumberInstance();
     ArrayList<String> prints = new ArrayList<String>();
 
-    /*
-      Returns the Hashtable key for a pair of function names a and b.
-      Arguments: a and b, the function names
-    */
     public static String getPairName(String a, String b) {
         if (a.compareTo(b) > 0) {
             String temp = a;
@@ -33,19 +29,11 @@ class Pipair {
         }
         return a + ":" + b;
     }
-
-    /*
-      class SupportGraph
-      Encapsulates support values for function calls.
-    */
+    
     class SupportGraph {
         Hashtable<String,Integer> supports = new Hashtable<String,Integer>();
         HashSet<String> allNames = new HashSet<String>();
-
-        /*
-          Extracts and stores support values from a parsed call graph. Modifies
-          the SupportGraph object.
-        */
+        
         private void parseFromCallGraph(Hashtable<String,ArrayList<String>> cg) {
             Enumeration funcs = cg.elements();
             while (funcs.hasMoreElements()) {
@@ -64,19 +52,12 @@ class Pipair {
             }
         }
 
-        /*
-          Removes duplicate calls from a single function in a parsed call graph.
-        */
         private ArrayList<String> removeDuplicateCalls(ArrayList<String> calls) {
             HashSet<String> callSet = new HashSet<String>(calls);
             calls = new ArrayList<String>(callSet);
             return calls;
         }
-
-        /*
-          Creates a new support entry if it does not exist, otherwise increments
-          the existing value.
-        */
+        
         private void createOrIncrementSupport(String name) {
             Integer curSing = supports.get(name);
             if (curSing == null) {
@@ -87,10 +68,6 @@ class Pipair {
         }
     }
 
-    /*
-      Finds and prints violations from a parsed call graph and its associated
-      SupportGraph.
-    */
     public void findAndPrintViolations(Hashtable<String,ArrayList<String>> cg,
                                        SupportGraph sg) {
         Enumeration<String> cgKeySet = cg.keys();
@@ -106,12 +83,7 @@ class Pipair {
             }
         }
     }
-
-    /*
-      Helper for findAndPrintViolations. Prints the invariants for a function f1
-      in a given caller, given the associated SupportGraph and other calls made from
-      the caller.
-    */
+    
     private void printInvariantsForFunction(String caller,
                                             String f1,
                                             SupportGraph sg,
@@ -139,10 +111,6 @@ class Pipair {
         }
     }
 
-    /*
-      Helper for printInvariantsForFunction. Stores a violation for later printing.
-      Does not actually print until later flush.
-    */
     public void printViolation(String caller, String f1, String f2,
                                int support, float confidence) {
         String pair;
@@ -156,10 +124,7 @@ class Pipair {
                    support + ", confidence: " +
                    numf.format(confidence * 100.0) + "%");
     }
-
-    /*
-      Sorts and flushes stored violation print statements.
-    */
+    
     public void flushPrint() {
         Collections.sort(prints);
         for (int i = 0; i < prints.size(); i++) {
@@ -167,9 +132,6 @@ class Pipair {
         }
     }
 
-    /*
-      Pipair main: Parses a call graph file and prints likely invariants.
-    */
     public void run(String cgFile) {
         numf.setMaximumFractionDigits(2);
         numf.setMinimumFractionDigits(2);
@@ -181,10 +143,7 @@ class Pipair {
         findAndPrintViolations(cg, sg);
         flushPrint();
     }
-
-    /*
-      Parse program arguments and begin execution.
-    */
+    
     public static void main(String[] args) {
         if (args.length < 1) {
             System.out.println("Usage: ./pipair <bitcode file> <T SUPPORT> <T CONFIDENCE>,");
