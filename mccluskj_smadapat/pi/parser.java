@@ -16,16 +16,16 @@ import java.util.Set;
 class Parser {
     public static Hashtable<String,ArrayList<String>> parseFile(String fileName, int levels) {
         Hashtable<String, ArrayList<String>> table = new Hashtable<String,ArrayList<String>>();
-        
         Runtime rt = Runtime.getRuntime();
+  
         try {
             Process pr = rt.exec("opt -print-callgraph -disable-output " + fileName);
             InputStream st = pr.getErrorStream();
             BufferedReader in = new BufferedReader(new InputStreamReader(st));
             String line = null;
-
             int state = 0;
             String current = null;
+            
             while ((line = in.readLine()) != null) { 
               switch (state) {
                 case(1):
@@ -40,7 +40,6 @@ class Parser {
                   }
                 case(0):
                   if (line.startsWith("Call graph node for function")) {
-                    
                     String[] slist = line.split("\'");
                     current = slist[1];
                     ArrayList<String> nlist = new ArrayList<String>();
@@ -54,12 +53,10 @@ class Parser {
                   }
                   break;
               }
-
             }
             
             for (int l = 0; l < levels; l++) {
               Hashtable<String,ArrayList<String>> staticTable = deepCopy(table);
-
               Enumeration funcs = table.elements();
                 
               while (funcs.hasMoreElements()) {
@@ -68,7 +65,6 @@ class Parser {
 
                 for (int i = 0; i < originalCalls.size(); i++) {
                   String expandFunc = originalCalls.get(i);
-
                   ArrayList<String> funcsToBeAdded = staticTable.get(expandFunc);
 
                   if (funcsToBeAdded.size() > 0) {
@@ -90,19 +86,15 @@ class Parser {
 
     public static Hashtable<String,ArrayList<String>> deepCopy(Hashtable<String,ArrayList<String>> iniTable) {
       Hashtable<String,ArrayList<String>> nTable = new Hashtable<String,ArrayList<String>>();
-
       Enumeration funcs = iniTable.keys();
       
       while (funcs.hasMoreElements()) { 
         String func = (String)funcs.nextElement();
         ArrayList<String> iniCalls = iniTable.get(func); 
-
         ArrayList<String> nCalls = (ArrayList<String>)iniCalls.clone();
-
         nTable.put(func, nCalls);
       }
       
       return nTable;
-
     }
 }
