@@ -21,10 +21,10 @@ class Pipair {
     NumberFormat numberFormat = NumberFormat.getNumberInstance();                       
 
     public static String getPairName(String one, String two) {                          
-        if (!one.compareTo(two) <= 0) {                                                 
+        if (!(one.compareTo(two) <= 0)) {                                                 
             String temp = one; one = two; two = temp;                                   
         }
-        return a + ":" + b;                                                            
+        return one + ":" + two;                                                            
     }
     
     class SupportGraph {                                                                
