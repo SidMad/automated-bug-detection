@@ -1,17 +1,17 @@
 import java.util.ArrayList;
-import java.util.Enumeration;
+import java.io.BufferedReader;
 import java.util.Collections;
-import java.io.IOException;
+import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.HashSet;
-import java.util.Set;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
-import java.io.InputStream;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.text.NumberFormat;
 import java.math.RoundingMode;
+import java.util.Set;
 
 class Parser {
     public static Hashtable<String,ArrayList<String>> parseFile(String fileName, int levels) {
