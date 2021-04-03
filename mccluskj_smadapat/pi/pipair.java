@@ -13,38 +13,33 @@ import java.text.NumberFormat;
 import java.math.RoundingMode;
 import java.util.Set;
 
-class Pipair {
+class Pipair {                                                                         
+    int tSupport = 3;                                                                   
+    float tConfidence = 0.65f;                                                          
+    int levels = 0;                                                                     
+    ArrayList<String> stringList = new ArrayList<String>();                             
+    NumberFormat numberFormat = NumberFormat.getNumberInstance();                       
 
-    int tSupport = 3;
-    float tConfidence = 0.65f;
-    int levels = 0;
-    NumberFormat numf = NumberFormat.getNumberInstance();
-    ArrayList<String> prints = new ArrayList<String>();
-
-    public static String getPairName(String a, String b) {
-        if (a.compareTo(b) > 0) {
-            String temp = a;
-            a = b;
-            b = temp;
+    public static String getPairName(String one, String two) {                          
+        if (!one.compareTo(two) <= 0) {                                                 
+            String temp = one; one = two; two = temp;                                   
         }
-        return a + ":" + b;
+        return a + ":" + b;                                                            
     }
     
-    class SupportGraph {
-        Hashtable<String,Integer> supports = new Hashtable<String,Integer>();
-        HashSet<String> allNames = new HashSet<String>();
+    class SupportGraph {                                                                
+        HashSet<String> nameResults = new HashSet<String>();                            
+        Hashtable<String,Integer> matchingResults = new Hashtable<String,Integer>();    
         
-        private void parseFromCallGraph(Hashtable<String,ArrayList<String>> cg) {
+        private void parseFromCallGraph(Hashtable<String,ArrayList<String>> cg) {       
             Enumeration funcs = cg.elements();
             while (funcs.hasMoreElements()) {
-                ArrayList<String> calls = (ArrayList<String>)funcs.nextElement();
+                ArrayList<String> calls = (ArrayList<String>)funcs.nextElement(); 
                 calls = removeDuplicateCalls(calls);
-
                 for (int i = 0; i < calls.size(); i++) {
-                    allNames.add(calls.get(i));
+                    nameResults.add(calls.get(i));
                     for (int j = i + 1; j < calls.size(); j++) {
-                        String name = Pipair.getPairName(calls.get(i),
-                                                         calls.get(j));
+                        String name = Pipair.getPairName(calls.get(i), calls.get(j)); 
                         createOrIncrementSupport(name);
                     }
                     createOrIncrementSupport(calls.get(i));
@@ -53,23 +48,22 @@ class Pipair {
         }
 
         private ArrayList<String> removeDuplicateCalls(ArrayList<String> calls) {
-            HashSet<String> callSet = new HashSet<String>(calls);
+            HashSet<String> callSet = new HashSet<String>(calls); 
             calls = new ArrayList<String>(callSet);
             return calls;
         }
         
         private void createOrIncrementSupport(String name) {
-            Integer curSing = supports.get(name);
+            Integer curSing = matchingResults.get(name);
             if (curSing == null) {
-                supports.put(name, 1);
+                matchingResults.put(name, 1);
             } else {
-                supports.put(name, new Integer(curSing + 1));
+                matchingResults.put(name, new Integer(curSing + 1));
             }
         }
     }
 
-    public void findAndPrintViolations(Hashtable<String,ArrayList<String>> cg,
-                                       SupportGraph sg) {
+    public void findAndPrintViolations(Hashtable<String,ArrayList<String>> cg, SupportGraph sg) {
         Enumeration<String> cgKeySet = cg.keys();
         while (cgKeySet.hasMoreElements()) {
             String caller = (String)cgKeySet.nextElement();
@@ -84,22 +78,19 @@ class Pipair {
         }
     }
     
-    private void printInvariantsForFunction(String caller,
-                                            String f1,
-                                            SupportGraph sg,
-                                            HashSet<String> calls) {
-        Iterator<String> i = sg.allNames.iterator();
+    private void printInvariantsForFunction(String caller, String f1, SupportGraph sg, HashSet<String> calls) {
+        Iterator<String> i = sg.nameResults.iterator();
         while (i.hasNext()) {
             String f2 = i.next();
             String key = Pipair.getPairName(f1, f2);
             
-            if (!sg.supports.containsKey(key) ||
-                !sg.supports.containsKey(f1)) {
+            if (!sg.matchingResults.containsKey(key) ||
+                !sg.matchingResults.containsKey(f1)) {
                 continue;
             }
 
-            int pairSupport = sg.supports.get(key).intValue();
-            int singleSupport = sg.supports.get(f1).intValue();
+            int pairSupport = sg.matchingResults.get(key).intValue();
+            int singleSupport = sg.matchingResults.get(f1).intValue();
             float confidence = (float)pairSupport/singleSupport;
 
             if (confidence >= tConfidence && pairSupport >= tSupport) {
@@ -111,31 +102,30 @@ class Pipair {
         }
     }
 
-    public void printViolation(String caller, String f1, String f2,
-                               int support, float confidence) {
+    public void printViolation(String caller, String f1, String f2, int support, float confidence) {
         String pair;
         if (f1.compareTo(f2) > 0) {
             pair = f2 + " " + f1;
         } else {
             pair = f1 + " " + f2;
         }
-        prints.add("bug: " + f1 + " in " + caller + ", " +
+        stringList.add("bug: " + f1 + " in " + caller + ", " +
                    "pair: (" + pair + "), support: " +
-                   support + ", confidence: " +
-                   numf.format(confidence * 100.0) + "%");
+                   support + ", confidence: " +               
+                   numberFormat.format(confidence * 100.0) + "%");
     }
     
     public void flushPrint() {
-        Collections.sort(prints);
-        for (int i = 0; i < prints.size(); i++) {
-            System.out.println(prints.get(i));
+        Collections.sort(stringList);
+        for (int i = 0; i < stringList.size(); i++) {
+            System.out.println(stringList.get(i));
         }
     }
 
     public void run(String cgFile) {
-        numf.setMaximumFractionDigits(2);
-        numf.setMinimumFractionDigits(2);
-        numf.setRoundingMode(RoundingMode.HALF_EVEN);
+        numberFormat.setMaximumFractionDigits(2);
+        numberFormat.setMinimumFractionDigits(2);
+        numberFormat.setRoundingMode(RoundingMode.HALF_EVEN);
 
         Hashtable<String,ArrayList<String>> cg = Parser.parseFile(cgFile,levels);
         SupportGraph sg = new SupportGraph();
